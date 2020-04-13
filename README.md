@@ -1,10 +1,11 @@
 # School: Snake Game JavaScript
 ### CPSC 254 Project.
+#### Members
 
-Name: Tuan Ngo    nat1994@csu.fullerton.edu
+1. Tuan Ngo    nat1994@csu.fullerton.edu
 
-Name: Kim Vinh    kimvinh@csu.fullerton.edu
+2. Vinh Tran    kimvinh@csu.fullerton.edu
 
-Name:  Maria     rosemary98@csu.fullerton.edu
+3. Maria Medina     rosemary98@csu.fullerton.edu
 
-Language: JavaScript
+#### Language: JavaScript
