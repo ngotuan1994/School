@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>JavaScript Snake game</title>
+<link rel="stylesheet" type"text/css" href="mystyle.css">
+<div id="color"><style >
+    canvas {background: black}
+</style>
+</div>
+
+<script src="snake.js"></script>
+
+</script>
+</head>
+
+<body>
+
+  <audio id="player" src="lib/electronic.mp3" autoplay loop></audio>
+  <script>
+    document.getElementById("player").play();
+  </script>
+<div>
+<button onclick="document.getElementById('player').play()">Audio Play</button>
+<button onclick="document.getElementById('player').pause()">Pause</button>
+<button onclick="document.getElementById('player').volume+=0.1">Volume Up</button>
+<button onclick="document.getElementById('player').volume-=0.1">Volume Down</button>
+</div>
+
+    <canvas id="myCanvas" width=500 height=500>
+    </canvas>
+    <br><button   onclick="init();"> Play Game  </button>
+
+    <button id="play_again" onclick="again();"> play again </button>
+    <p1>        Click Play button to start your game. Use arrow buttons on key board to control the snake
+    </p1>
+
+    <br><button onclick="speed(50);"> Fast Speed </button>
+    <button onclick="speed(130)">Medium Speed </button>
+    <button onclick="speed(250);"> Slow  Speed </button>
+    <br><button onclick="change_size(300,300);"> Size Small </button>
+    <button onclick="change_size(500,500);"> Size Medium </button>
+
+    <button onclick="change_size(750,750);"> Size Large </button>
+
+    <script> function change_size(x,y){
+      var a=document.getElementById("myCanvas");
+      a.height=x;
+      a.width=y;
+      C_HEIGHT=x;
+      C_WIDTH=y;
+    }
+      </script>
+    <script>
+      back_ground_change();
+    </script>
+
+
+</body>
+</html>
