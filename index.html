@@ -3,55 +3,129 @@
 <head>
 <title>JavaScript Snake game</title>
 <link rel="stylesheet" type"text/css" href="mystyle.css">
+</head>
+
 <div id="color"><style >
     canvas {background: black}
 </style>
 </div>
 
-<script src="snake.js"></script>
-
-</script>
-</head>
-
 <body>
+  <p>************************************************</p>
+  <p>***** WELCOME TO OPEN-SOURCE PROJECT *****</p>
+  <p>**************@ SNAKE GAME @****************</p>
+  <p>************************************************</p>
+  <script src="snake.js"></script>
+  <button id="button" style="height:30px;width:100px" onclick="playGame();" disabled>PLAY GAME</button> </br>
 
-  <audio id="player" src="lib/electronic.mp3" autoplay loop></audio>
-  <script>
-    document.getElementById("player").play();
-  </script>
-<div>
+  <button id="reset" style="height:30px;width:100px" onclick="reset()">RESET</button> </br>
+
+  <button id="setting" style="height:30px;width:100px" onclick="gameSetting();">SETTING</button> </br>
+  <div id="myDIV" style="display:none">
+    </br>
+    <label for="frame">FRAME:</label>
+    <select id="frame">
+      <option value="400">DEFAULT</option>
+      <option value="300">300x300</option>
+      <option value="500">500x500</option>
+      <option value="700">700x700</optopn>
+    </select>
+    <br></br>
+    <label for="speed">SPEED:</label>
+    <select id="speed">
+      <option value="125">DEFAULT</option>
+      <option value="150">Slow</option>
+      <option value="100">Medium</option>
+      <option value="50">Fast</optopn>
+    </select>
+    <br></br>
+    <label for="sound">SOUND:</label>
+    <select id="sound">
+      <option value="on">On</option>
+      <option value="off">Off</option>
+    </select>
+    <br></br>
+    <button id="apply" onclick="apply();">APPLY</button>
+    <br>
+  </div>
+  </br>
+<!--<div>
 <button onclick="document.getElementById('player').play()">Audio Play</button>
 <button onclick="document.getElementById('player').pause()">Pause</button>
 <button onclick="document.getElementById('player').volume+=0.1">Volume Up</button>
 <button onclick="document.getElementById('player').volume-=0.1">Volume Down</button>
-</div>
+</div>-->
 
-    <canvas id="myCanvas" width=500 height=500>
-    </canvas>
-    <br><button   onclick="init();"> Play Game  </button>
+    <audio id="player" src="lib/electronic.mp3" autoplay loop></audio>
+    <center>
+      <canvas id="myCanvas" style="display:none"></canvas> </br>
+      <button id="playAgain" style="height:30px;width:100px;display:none" onclick="replayGame();">PLAY AGAIN</button>
+    </center>
 
-    <button id="play_again" onclick="again();"> play again </button>
-    <p1>        Click Play button to start your game. Use arrow buttons on key board to control the snake
-    </p1>
-
-    <br><button onclick="speed(50);"> Fast Speed </button>
-    <button onclick="speed(130)">Medium Speed </button>
+    <!--<br><button onclick="speed(50);"> Fast Speed </button>
+    <button onclick="speed(150)">Medium Speed </button>
     <button onclick="speed(250);"> Slow  Speed </button>
     <br><button onclick="change_size(300,300);"> Size Small </button>
     <button onclick="change_size(500,500);"> Size Medium </button>
 
-    <button onclick="change_size(750,750);"> Size Large </button>
+    <button onclick="change_size(750,750);"> Size Large </button>-->
 
-    <script> function change_size(x,y){
+    <script> function playGame() {
+      document.getElementById("button").disabled = true;
+      init();
+      document.getElementById("playAgain").style.display = "block";
+    }
+    </script>
+
+    <script> function replayGame() {
+      again();
+    }
+    </script>
+
+    <script> function reset() {
+      location.reload();
+    }
+    </script>
+
+    <script> function gameSetting() {
+      var hideShow = document.getElementById("myDIV");
+      if (hideShow.style.display == "none") {
+        hideShow.style.display = "block";
+      } else {
+        hideShow.style.display = "none";
+      }
+    }
+    </script>
+
+    <script> function apply() {
+      var sizeFrame = document.getElementById("frame").value;
+      change_size(sizeFrame, sizeFrame);
+
+      var velocity = document.getElementById("speed").value;
+      speed(velocity);
+
+      var sound = document.getElementById("sound").value;
+      if (sound == "on") {
+        document.getElementById("player").play();
+      }
+
+      document.getElementById("button").disabled = false;
+      document.getElementById("myDIV").style.display = "none";
+      document.getElementById("frame").disabled = true;
+      document.getElementById("speed").disabled = true;
+      document.getElementById("sound").disabled = true;
+      document.getElementById("apply").disabled = true;
+      document.getElementById("myCanvas").style.display = "block";
+    }
+    </script>
+
+    <script> function change_size(x,y) {
       var a=document.getElementById("myCanvas");
       a.height=x;
       a.width=y;
       C_HEIGHT=x;
       C_WIDTH=y;
     }
-      </script>
-    <script>
-      back_ground_change();
     </script>
 
 

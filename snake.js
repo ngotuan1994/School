@@ -22,7 +22,7 @@ var score=0;
 var DOT_SIZE = 10;
 const ALL_DOTS = 900;
 const MAX_RAND = 29;
-var DELAY = 150;
+var DELAY;
 var C_HEIGHT = 500;
 var C_WIDTH = 500;
 
@@ -39,8 +39,9 @@ const s=83;
 
 var x = new Array(ALL_DOTS);
 var y = new Array(ALL_DOTS);
+
 function speed(a){
-  DELAY= a;
+  DELAY = a;
 }
 
 function getNewRandomColor()
@@ -59,7 +60,8 @@ function init() {
     locateApple();
     setTimeout("gameCycle()", DELAY);
 }
-function again(){
+
+function again() {
   score=0;
   ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
   canvas.width=C_WIDTH;
@@ -125,13 +127,11 @@ function doDrawing() {
             }
         }
     } else {
-
         gameOver();
     }
 }
 
 function gameOver() {
-
     ctx.fillStyle = 'red';
     ctx.textBaseline = 'middle';
     ctx.textAlign = 'center';
@@ -143,8 +143,6 @@ function gameOver() {
     ctx.fillText("Click play again to play game again",C_WIDTH/2+15,C_HEIGHT/2+15);
     ctx.fillStyle= "red";
     ctx.fillText('Your Score is: ' + score,C_WIDTH/2+15,C_HEIGHT/2+35);
-
-
 }
 
 function checkApple() {
@@ -191,7 +189,7 @@ function checkCollision() {
     }
 
     if (y[0] >= C_HEIGHT) {
-        ingame= false;
+        inGame= false;
     }
 
     if (y[0] < 0) {
@@ -217,7 +215,6 @@ function locateApple() {
 }
 
 function gameCycle() {
-
     if (inGame) {
 
         checkApple();
