@@ -12,6 +12,28 @@ body{
   left:50%;
   background-color: hsl(89, 43%, 51%);
   text-align: center;
-
-
+}
+#button{
+  background-color: lightskyblue;
+}
+#reset{
+  background-color: powderblue;
+}
+#setting{
+  background-color: lightblue;
+}
+#playAgain{
+  background-color: burlywood;
+}
+#frame{
+  background-color: lightsalmon;
+}
+#speed{
+  background-color: lightsalmon;
+}
+#sound{
+  background-color: lightsalmon;
+}
+#apply{
+  background-color: lightsalmon;
 }

@@ -132,16 +132,16 @@ function doDrawing() {
 }
 
 function gameOver() {
-    ctx.fillStyle = 'red';
+    ctx.fillStyle = 'yellow';
     ctx.textBaseline = 'middle';
     ctx.textAlign = 'center';
-    ctx.font = 'normal bold 18px serif';
+    ctx.font = 'normal bold 20px serif';
 
     ctx.fillText('Game Over', C_WIDTH/2, C_HEIGHT/2);
 
     ctx.fillStyle="white";
     ctx.fillText("Click play again to play game again",C_WIDTH/2+15,C_HEIGHT/2+15);
-    ctx.fillStyle= "red";
+    ctx.fillStyle= "yellow";
     ctx.fillText('Your Score is: ' + score,C_WIDTH/2+15,C_HEIGHT/2+35);
 }
 
