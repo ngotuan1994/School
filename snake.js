@@ -4,6 +4,7 @@
 var canvas;
 var ctx;
 
+var poison;
 var head;
 var apple;
 var ball;
@@ -11,6 +12,8 @@ var ball;
 var dots;
 var apple_x;
 var apple_y;
+var poison_x;
+var poison_y;
 
 var leftDirection = false;
 var rightDirection = true;
@@ -58,6 +61,7 @@ function init() {
     loadImages();
     createSnake();
     locateApple();
+    locatePoison();
     setTimeout("gameCycle()", DELAY);
 }
 
@@ -70,6 +74,7 @@ function again() {
   loadImages();
   createSnake();
   locateApple();
+  locatePoison();
   setTimeout("gameCycle()", DELAY);
 }
 
@@ -83,6 +88,9 @@ function loadImages() {
 
     apple = new Image();
     apple.src = "apple.png";
+
+    poison = new Image();
+    poison.src = "poison.png";
 }
 
 function createSnake() {
@@ -92,16 +100,6 @@ function createSnake() {
     for (var z = 0; z < dots; z++) {
         x[z] = C_WIDTH/2 - z * 10;
         y[z] = C_HEIGHT/2;
-    }
-}
-
-function checkApple() {
-
-    if ((x[0] == apple_x) && (y[0] == apple_y)) {
-
-        dots++;
-
-        locateApple();
     }
 }
 
@@ -117,6 +115,7 @@ function doDrawing() {
     if (inGame) {
 
         ctx.drawImage(apple, apple_x, apple_y);
+        ctx.drawImage(poison, poison_x, poison_y);
 
         for (var z = 0; z < dots; z++) {
 
@@ -152,6 +151,21 @@ function checkApple() {
         dots++;
         score++;
         locateApple();
+        locatePoison();
+    }
+}
+function checkPoison() {
+
+    if ((x[0] == poison_x) && (y[0] == poison_y)) {
+
+        dots--;
+        score--;
+        locatePoison();
+        locateApple();
+        if((score < 0) || (dots < 0)){
+          gameOver();
+          inGame = false;
+        }
     }
 }
 
@@ -214,13 +228,25 @@ function locateApple() {
     apple_y = r * DOT_SIZE;
 }
 
+function locatePoison() {
+
+    var r = Math.floor(Math.random() * MAX_RAND);
+    poison_x = r * DOT_SIZE;
+
+    r = Math.floor(Math.random() * MAX_RAND);
+    poison_y = r * DOT_SIZE;
+}
+
 function gameCycle() {
     if (inGame) {
 
         checkApple();
         checkCollision();
+        checkPoison();
+        checkCollision();
         move();
         doDrawing();
+        //doDrawing2();
         setTimeout("gameCycle()", DELAY);
     }
 }
