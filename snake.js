@@ -4,6 +4,7 @@
 var canvas;
 var ctx;
 
+var elixir;
 var poison;
 var head;
 var apple;
@@ -14,6 +15,8 @@ var apple_x;
 var apple_y;
 var poison_x;
 var poison_y;
+var elixir_x;
+var elixir_y;
 
 var leftDirection = false;
 var rightDirection = true;
@@ -62,6 +65,7 @@ function init() {
     createSnake();
     locateApple();
     locatePoison();
+    locateElixir();
     setTimeout("gameCycle()", DELAY);
 }
 
@@ -75,6 +79,7 @@ function again() {
   createSnake();
   locateApple();
   locatePoison();
+  locateElixir();
   setTimeout("gameCycle()", DELAY);
 }
 
@@ -91,6 +96,9 @@ function loadImages() {
 
     poison = new Image();
     poison.src = "poison.png";
+
+    elixir = new Image();
+    elixir.src = "elixir.png";
 }
 
 function createSnake() {
@@ -116,7 +124,9 @@ function doDrawing() {
 
         ctx.drawImage(apple, apple_x, apple_y);
         ctx.drawImage(poison, poison_x, poison_y);
-
+        if(score % 2 == 0){
+        ctx.drawImage(elixir, elixir_x, elixir_y);
+      }
         for (var z = 0; z < dots; z++) {
 
             if (z == 0) {
@@ -152,20 +162,34 @@ function checkApple() {
         score++;
         locateApple();
         locatePoison();
+        locateElixir();
     }
 }
 function checkPoison() {
 
     if ((x[0] == poison_x) && (y[0] == poison_y)) {
 
-        dots= dots - 3;
+        dots-=3;
         score--;
         locatePoison();
         locateApple();
+        locateElixir();
         if((score < 0) || (dots < 0)){
           gameOver();
           inGame = false;
         }
+    }
+}
+
+function checkElixir() {
+
+    if ((x[0] == elixir_x) && (y[0] == elixir_y)) {
+
+        dots+=3;
+        score++;
+        locatePoison();
+        locateApple();
+        locateElixir();
     }
 }
 
@@ -237,6 +261,15 @@ function locatePoison() {
     poison_y = r * DOT_SIZE;
 }
 
+function locateElixir(){
+if(score % 2 == 0){
+    var r = Math.floor(Math.random() * MAX_RAND);
+    elixir_x = r * DOT_SIZE;
+
+    r = Math.floor(Math.random() * MAX_RAND);
+    elixir_y = r * DOT_SIZE;
+  }
+}
 function gameCycle() {
     if (inGame) {
 
@@ -244,9 +277,10 @@ function gameCycle() {
         checkCollision();
         checkPoison();
         checkCollision();
+        checkElixir();
+        checkCollision();
         move();
         doDrawing();
-        //doDrawing2();
         setTimeout("gameCycle()", DELAY);
     }
 }
