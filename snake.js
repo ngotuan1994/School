@@ -158,7 +158,7 @@ function checkPoison() {
 
     if ((x[0] == poison_x) && (y[0] == poison_y)) {
 
-        dots--;
+        dots= dots - 3;
         score--;
         locatePoison();
         locateApple();
