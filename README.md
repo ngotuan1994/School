@@ -8,4 +8,4 @@
 
 3. Maria Medina     rosemary98@csu.fullerton.edu
 
-#### Language: JavaScript
+#### Language: JavaScript, HTML, CSS
