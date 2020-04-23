@@ -13,8 +13,11 @@ body{
   background-color: hsl(89, 43%, 51%);
   text-align: center;
 }
-#button{
+#play{
   background-color: lightskyblue;
+}
+#instruction{
+  background-color: skyblue;
 }
 #reset{
   background-color: powderblue;
@@ -29,6 +32,9 @@ body{
   background-color: lightsalmon;
 }
 #speed{
+  background-color: lightsalmon;
+}
+#color{
   background-color: lightsalmon;
 }
 #sound{

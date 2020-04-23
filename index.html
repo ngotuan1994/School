@@ -5,32 +5,46 @@
 <link rel="stylesheet" type"text/css" href="mystyle.css">
 </head>
 
-<div id="color"><style >
+<!-- Create the color background for the game -->
+<div id="background">
+  <style>
     canvas {
-      background-image:  url(download.jpg);
+      background: black;
     }
-</style>
+  </style>
 </div>
 
 <body>
-  <p>************************************************</p>
-  <p>***** WELCOME TO OPEN-SOURCE PROJECT *****</p>
-  <p>**************@ SNAKE GAME @****************</p>
-  <p>************************************************</p>
+  <!-- Load 'snake.js' file -->
   <script src="snake.js"></script>
-  <button id="button" style="height:30px;width:100px" onclick="playGame();" disabled>PLAY GAME</button> </br>
 
-  <button id="reset" style="height:30px;width:100px" onclick="reset()">RESET</button> </br>
+  <!-- Create the header for the webpage -->
+  <p><img src="header1.png"></p>
+  <p><img src="header2.png"></p>
 
-  <button id="setting" style="height:30px;width:100px" onclick="gameSetting();">SETTING</button> </br>
+  <!-- Create the buttons for the game -->
+  <!-- 'PLAY GAME' button -->
+  <button id="play" style="height:30px;width:150px" onclick="playGame();" title="Set Up The Game To Play" disabled>PLAY GAME</button></br>
+  <!-- 'HOW TO PLAY' button -->
+  <button id="instruction" style="height:30px;width:150px" onclick="howToPlay();">HOW TO PLAY</button> </br>
+  <div id="myDIV2" style="display:none">
+    <p style="font-size:20px"><b><img src="Up-arrow.png" width="25" height="25"> , <img src="W-key.png" width="25" height="25">: Move Up </b></p>
+    <p style="font-size:20px"><b><img src="Down-arrow.png" width="25" height="25"> , <img src="S-key.png" width="25" height="25">: Move Down </b></p>
+    <p style="font-size:20px"><b><img src="Left-arrow.png" width="25" height="25"> , <img src="A-key.png" width="25" height="25">: Move Left </b></p>
+    <p style="font-size:20px"><b><img src="Right-arrow.png" width="25" height="25"> , <img src="D-key.png" width="25" height="25">: Move Right </b></p>
+    <p style="font-size:20px"><b><img src="Enter-key.png" width="25" height="25">: Press To Play Again </b></p>
+  </div>
+  <!-- 'RESET' button -->
+  <button id="reset" style="height:30px;width:150px" onclick="reset()">RESET</button> </br>
+  <!-- 'SETTING' button -->
+  <button id="setting" style="height:30px;width:150px" onclick="gameSetting();">SETTING</button> </br>
   <div id="myDIV" style="display:none">
     </br>
     <label for="frame">FRAME:</label>
     <select id="frame">
-      <option value="400">DEFAULT</option>
-      <option value="300">300x300</option>
+      <option value="300">DEFAULT</option>
+      <option value="400">400x400</option>
       <option value="500">500x500</option>
-      <option value="700">700x700</optopn>
     </select>
     <br></br>
     <label for="speed">SPEED:</label>
@@ -39,6 +53,16 @@
       <option value="150">Slow</option>
       <option value="100">Medium</option>
       <option value="50">Fast</optopn>
+    </select>
+    <br></br>
+    <label for="color">COLOR OF SNAKE:</label>
+    <select id="color">
+      <option value="red">RED</option>
+      <option value="blue">BLUE</option>
+      <option value="green">GREEN</option>
+      <option value="orange">ORANGE</option>
+      <option value="purple">PURPLE</option>
+      <option value="yellow">YELLOW</option>
     </select>
     <br></br>
     <label for="sound">SOUND:</label>
@@ -51,85 +75,82 @@
     <br>
   </div>
   </br>
-<!--<div>
-<button onclick="document.getElementById('player').play()">Audio Play</button>
-<button onclick="document.getElementById('player').pause()">Pause</button>
-<button onclick="document.getElementById('player').volume+=0.1">Volume Up</button>
-<button onclick="document.getElementById('player').volume-=0.1">Volume Down</button>
-</div>-->
 
-    <audio id="player" src="lib/electronic.mp3" autoplay loop></audio>
-    <center>
-      <canvas id="myCanvas" style="display:none"></canvas> </br>
-      <button id="playAgain" style="height:30px;width:100px;display:none" onclick="replayGame();">PLAY AGAIN</button>
-    </center>
+  <!-- Load musical files -->
+  <audio id="music1" src="lib/electronic.mp3" autoplay loop></audio>
+  <audio id="music2" src="lib/first-noel-r&b.mp3" autoplay loop></audio>
 
-    <!--<br><button onclick="speed(50);"> Fast Speed </button>
-    <button onclick="speed(150)">Medium Speed </button>
-    <button onclick="speed(250);"> Slow  Speed </button>
-    <br><button onclick="change_size(300,300);"> Size Small </button>
-    <button onclick="change_size(500,500);"> Size Medium </button>
+  <!-- Create the frame for the game -->
+  <center>
+    <canvas id="myCanvas" style="display:none"></canvas> </br>
+  </center>
 
-    <button onclick="change_size(750,750);"> Size Large </button>-->
+  <!-- Create EventListener for 'PLAY GAME' button -->
+  <script> function playGame() {
+    document.getElementById("play").disabled = true;
+    init();
+  }
+  </script>
 
-    <script> function playGame() {
-      document.getElementById("button").disabled = true;
-      init();
-      document.getElementById("playAgain").style.display = "block";
+  <!-- Create EventListener for 'RESET' button -->
+  <script> function reset() {
+    location.reload();
+  }
+  </script>
+
+  <!-- Create EventListener for 'HOW TO PLAY' button -->
+  <script> function howToPlay() {
+    var hideShow = document.getElementById("myDIV2");
+    if (hideShow.style.display == "none") {
+      hideShow.style.display = "block";
+    } else {
+      hideShow.style.display = "none";
     }
-    </script>
+  }
+  </script>
 
-    <script> function replayGame() {
-      again();
+  <!-- Create EventListener for 'SETTING' button -->
+  <script> function gameSetting() {
+    var hideShow = document.getElementById("myDIV");
+    if (hideShow.style.display == "none") {
+      hideShow.style.display = "block";
+    } else {
+      hideShow.style.display = "none";
     }
-    </script>
+  }
+  </script>
 
-    <script> function reset() {
-      location.reload();
-    }
-    </script>
+  <!-- Create EventListener for 'APPLY' button -->
+  <script> function apply() {
+    var sizeFrame = document.getElementById("frame").value;
+    canvasFrame(sizeFrame, sizeFrame);
 
-    <script> function gameSetting() {
-      var hideShow = document.getElementById("myDIV");
-      if (hideShow.style.display == "none") {
-        hideShow.style.display = "block";
+    var velocity = document.getElementById("speed").value;
+    speed(velocity);
+
+    var paint = document.getElementById("color").value;
+    paintedBall(paint);
+
+    var sound = document.getElementById("sound").value;
+    if (sound == "on") {
+      var randomNumber = Math.floor((Math.random() * 10) + 1);
+      if (randomNumber % 2 == 0) {
+        document.getElementById("music1").play();
       } else {
-        hideShow.style.display = "none";
+        document.getElementById("music2").play();
       }
     }
-    </script>
 
-    <script> function apply() {
-      var sizeFrame = document.getElementById("frame").value;
-      change_size(sizeFrame, sizeFrame);
-
-      var velocity = document.getElementById("speed").value;
-      speed(velocity);
-
-      var sound = document.getElementById("sound").value;
-      if (sound == "on") {
-        document.getElementById("player").play();
-      }
-
-      document.getElementById("button").disabled = false;
-      document.getElementById("myDIV").style.display = "none";
-      document.getElementById("frame").disabled = true;
-      document.getElementById("speed").disabled = true;
-      document.getElementById("sound").disabled = true;
-      document.getElementById("apply").disabled = true;
-      document.getElementById("myCanvas").style.display = "block";
-    }
-    </script>
-
-    <script> function change_size(x,y) {
-      var a=document.getElementById("myCanvas");
-      a.height=x;
-      a.width=y;
-      C_HEIGHT=x;
-      C_WIDTH=y;
-    }
-    </script>
-
+    document.getElementById("play").disabled = false;
+    document.getElementById("myDIV").style.display = "none";
+    document.getElementById("frame").disabled = true;
+    document.getElementById("speed").disabled = true;
+    document.getElementById("sound").disabled = true;
+    document.getElementById("color").disabled = true;
+    document.getElementById("apply").disabled = true;
+    document.getElementById("myCanvas").style.display = "block";
+  }
+  </script>
 
 </body>
 </html>

@@ -4,316 +4,420 @@
 var canvas;
 var ctx;
 
-var elixir;
+var redApple;
 var poison;
 var head;
-var apple;
-var ball;
+var greenApple;
+var tail;
+var paint;
 
 var dots;
-var apple_x;
-var apple_y;
+var greenApple_x;
+var greenApple_y;
 var poison_x;
 var poison_y;
-var elixir_x;
-var elixir_y;
+var redApple_x;
+var redApple_y;
 
 var leftDirection = false;
 var rightDirection = true;
 var upDirection = false;
 var downDirection = false;
+var enterPressed = false;
+var hitWall = false;
+var hitYourself = false;
+var hitPosion = false;
 var inGame = true;
+var samePosition = false;
 var score=0;
+var increasedSpeed = 0;
+var randomValue;
+var setRedApple = false;
 
 var DOT_SIZE = 10;
-const ALL_DOTS = 900;
-const MAX_RAND = 29;
-var DELAY;
-var C_HEIGHT = 500;
-var C_WIDTH = 500;
+var ALL_DOTS;
+var MAX_RAND;
+var DELAY = 125;
+var tempDELAY;
+var C_HEIGHT;
+var C_WIDTH;
 
 const LEFT_KEY = 37;
 const RIGHT_KEY = 39;
 const UP_KEY = 38;
 const DOWN_KEY = 40;
+const ENTER_KEY = 13;
 const a=65;
 const w=87;
 const d=68;
 const s=83;
 
+var x;
+var y;
 
+// Create the frame and properties of the game
+function canvasFrame(w, h) {
+  var myFrame = document.getElementById('myCanvas');
+  if (w == 300) {
+    ALL_DOTS = 900;
+    MAX_RAND = 29;
+    x = new Array(ALL_DOTS);
+    y = new Array(ALL_DOTS);
+  } else if (w == 400) {
+    ALL_DOTS = 1600;
+    MAX_RAND = 39;
+    x = new Array(ALL_DOTS);
+    y = new Array(ALL_DOTS);
+  } else {
+    ALL_DOTS = 2500;
+    MAX_RAND = 49;
+    x = new Array(ALL_DOTS);
+    y = new Array(ALL_DOTS);
+  }
+  C_HEIGHT = h;
+  C_WIDTH = w;
+  myFrame.width = C_WIDTH;
+  myFrame.height = C_HEIGHT;
+}
 
-var x = new Array(ALL_DOTS);
-var y = new Array(ALL_DOTS);
-
-function speed(a){
+function speed(a) {
   DELAY = a;
+  tempDELAY = DELAY;
 }
 
-function getNewRandomColor()
-{
-    var myArray = ['red', 'green', 'blue'];
-    var rand = myArray[Math.floor(Math.random() * myArray.length)];
-    document.getElementById("color").background = rand;
+function increasingSpeed() {
+  if (increasedSpeed >= 10) {
+    tempDELAY -= 5;
+    increasedSpeed = 0;
+  }
 }
+
 function init() {
-
-    canvas = document.getElementById('myCanvas');
-    ctx = canvas.getContext('2d');
-
-    loadImages();
-    createSnake();
-    locateApple();
-    locatePoison();
-    locateElixir();
-    setTimeout("gameCycle()", DELAY);
+  canvas = document.getElementById('myCanvas');
+  ctx = canvas.getContext('2d');
+  loadImages();
+  createSnake();
+  locateGreenApple();
+  locatePoison();
+  locateRedApple();
+  setTimeout("gameCycle()", DELAY);
 }
 
 function again() {
   score=0;
+  increasedSpeed = 0;
+  tempDELAY = DELAY;
+  if (hitWall) {
+    hitWall = false;
+  } else if (hitPosion) {
+    hitPosion = false;
+  } else if (hitYourself) {
+    hitYourself = false;
+  }
   ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
   canvas.width=C_WIDTH;
   canvas.height=C_HEIGHT;
   inGame=true;
   loadImages();
   createSnake();
-  locateApple();
+  locateGreenApple();
   locatePoison();
-  locateElixir();
+  locateRedApple();
   setTimeout("gameCycle()", DELAY);
 }
 
 function loadImages() {
+  head = new Image();
+  head.src = 'snake-head.png';
 
-    head = new Image();
-    head.src = 'head1.png';
+  tail = new Image();
+  if (paint == "blue") {
+    tail.src = 'blue-dot.png';
+  } else if (paint == "green") {
+    tail.src = 'green-dot.png';
+  } else if (paint == "orange") {
+    tail.src = 'orange-dot.png';
+  } else if (paint == "purple") {
+    tail.src = 'purple-dot.png';
+  } else if (paint == "red") {
+    tail.src = 'red-dot.png';
+  } else {
+    tail.src = 'yellow-dot.png';
+  }
 
-    ball = new Image();
-    ball.src = 'dot.png';
+  greenApple = new Image();
+  greenApple.src = "green-apple.png";
 
-    apple = new Image();
-    apple.src = "apple.png";
+  poison = new Image();
+  poison.src = "poison.png";
 
-    poison = new Image();
-    poison.src = "poison.png";
+  redApple = new Image();
+  redApple.src = "red-apple.png";
+}
 
-    elixir = new Image();
-    elixir.src = "elixir.png";
+function paintedBall(color) {
+  paint = color;
 }
 
 function createSnake() {
+  dots = 3;
 
-    dots = 3;
-
-    for (var z = 0; z < dots; z++) {
-        x[z] = C_WIDTH/2 - z * 10;
-        y[z] = C_HEIGHT/2;
-    }
+  for (var z = 0; z < dots; z++) {
+    x[z] = C_WIDTH/2 - z * 10;
+    y[z] = C_HEIGHT/2;
+  }
 }
 
 function doDrawing() {
+  ctx.clearRect(0, 0, C_WIDTH, C_HEIGHT);
 
-    ctx.clearRect(0, 0, C_WIDTH, C_HEIGHT);
-
-    ctx.fillStyle="white";
-    ctx.font="10x Changa One";
-    ctx.fillText("Score:" ,10,10);
-    ctx.fillText(score ,50,10);
-
-    if (inGame) {
-
-        ctx.drawImage(apple, apple_x, apple_y);
-        ctx.drawImage(poison, poison_x, poison_y);
-        if(score % 2 == 0){
-        ctx.drawImage(elixir, elixir_x, elixir_y);
-      }
-        for (var z = 0; z < dots; z++) {
-
-            if (z == 0) {
-                ctx.drawImage(head, x[z], y[z]);
-            } else {
-                ctx.drawImage(ball, x[z], y[z]);
-            }
-        }
-    } else {
-        gameOver();
+  ctx.fillStyle="white";
+  ctx.font="10x Changa One";
+  ctx.fillText("Score:", 10, 10);
+  ctx.fillText(score, 50, 10);
+  if (C_WIDTH == 300) {
+    ctx.fillText("Speed:", 235, 10);
+    ctx.fillText(tempDELAY, 275, 10);
+    if ((x[0] == greenApple_x) && (y[0] == greenApple_y)) {
+      ctx.fillText("You ate a green apple (+1 point)", 75, 10);
+    } else if ((x[0] == redApple_x) && (y[0] == redApple_y)) {
+      ctx.fillText("You ate a red apple (+2 point)", 75, 10);
     }
+  } else if (C_WIDTH == 400) {
+    ctx.fillText("Speed:", 335, 10);
+    ctx.fillText(tempDELAY, 375, 10);
+    if ((x[0] == greenApple_x) && (y[0] == greenApple_y)) {
+      ctx.fillText("You ate a green apple (+1 point)", 125, 10);
+    } else if ((x[0] == redApple_x) && (y[0] == redApple_y)) {
+      ctx.fillText("You ate a red apple (+2 point)", 125, 10);
+    }
+  } else {
+    ctx.fillText("Speed:", 435, 10);
+    ctx.fillText(tempDELAY, 475, 10);
+    if ((x[0] == greenApple_x) && (y[0] == greenApple_y)) {
+      ctx.fillText("You ate a green apple (+1 point)", 175, 10);
+    } else if ((x[0] == redApple_x) && (y[0] == redApple_y)) {
+      ctx.fillText("You ate a red apple (+2 point)", 175, 10);
+    }
+  }
+
+  if (inGame) {
+    ctx.drawImage(greenApple, greenApple_x, greenApple_y);
+    ctx.drawImage(poison, poison_x, poison_y);
+    if (setRedApple) {
+      ctx.drawImage(redApple, redApple_x, redApple_y);
+    }
+    for (var z = 0; z < dots; z++) {
+      if (z == 0) {
+        ctx.drawImage(head, x[z], y[z]);
+      } else {
+        ctx.drawImage(tail, x[z], y[z]);
+      }
+    }
+  } else {
+    gameOver();
+  }
 }
 
 function gameOver() {
-    ctx.fillStyle = 'yellow';
-    ctx.textBaseline = 'middle';
-    ctx.textAlign = 'center';
-    ctx.font = 'normal bold 20px serif';
-
-    ctx.fillText('Game Over', C_WIDTH/2, C_HEIGHT/2);
-
-    ctx.fillStyle="white";
-    ctx.fillText("Click play again to play game again",C_WIDTH/2+15,C_HEIGHT/2+15);
-    ctx.fillStyle= "yellow";
-    ctx.fillText('Your Score is: ' + score,C_WIDTH/2+15,C_HEIGHT/2+35);
+  ctx.textBaseline = 'middle';
+  ctx.textAlign = 'center';
+  ctx.font = 'normal bold';
+  ctx.font = '20px Courier View';
+  ctx.fillStyle = 'white';
+  if (hitWall) {
+    ctx.fillText("You Hit The Wall", C_WIDTH/2, C_HEIGHT/2-30);
+  } else if (hitYourself) {
+    ctx.fillText("You Hit Yourself", C_WIDTH/2, C_HEIGHT/2-30);
+  } else if (hitPosion) {
+    ctx.fillText("You Ate The Poison", C_WIDTH/2, C_HEIGHT/2-30);
+  }
+  ctx.fillStyle = 'red';
+  ctx.fillText('GAME OVER', C_WIDTH/2+3, C_HEIGHT/2);
+  ctx.fillStyle = 'yellow';
+  ctx.fillText('Score: ' + score, C_WIDTH/2+3, C_HEIGHT/2+30);
+  enterPressed = true;
 }
 
-function checkApple() {
-
-    if ((x[0] == apple_x) && (y[0] == apple_y)) {
-
-        dots++;
-        score++;
-        locateApple();
-        locatePoison();
-        locateElixir();
+function checkGreenApple() {
+  if ((x[0] == greenApple_x) && (y[0] == greenApple_y)) {
+    dots++;
+    score++;
+    increasedSpeed++;
+    if (setRedApple) {
+      setRedApple = false;
     }
+    locateGreenApple();
+    locatePoison();
+    locateRedApple();
+  }
 }
 function checkPoison() {
-
-    if ((x[0] == poison_x) && (y[0] == poison_y)) {
-
-        dots-=3;
-        score--;
-        locatePoison();
-        locateApple();
-        locateElixir();
-        if((score < 0) || (dots < 0)){
-          gameOver();
-          inGame = false;
-        }
-    }
+  if ((x[0] == poison_x) && (y[0] == poison_y)) {
+    inGame = false;
+    hitPosion = true;
+  }
 }
 
-function checkElixir() {
-
-    if ((x[0] == elixir_x) && (y[0] == elixir_y)) {
-
-        dots+=3;
-        score++;
-        locatePoison();
-        locateApple();
-        locateElixir();
+function checkRedApple() {
+  if ((x[0] == redApple_x) && (y[0] == redApple_y)) {
+    dots+=2;
+    score+=2;
+    increasedSpeed+=2;
+    if (setRedApple) {
+      setRedApple = false;
     }
+    locateGreenApple();
+    locatePoison();
+    locateRedApple();
+  }
 }
 
 function move() {
+  for (var z = dots; z > 0; z--) {
+    x[z] = x[(z - 1)];
+    y[z] = y[(z - 1)];
+  }
 
-    for (var z = dots; z > 0; z--) {
-        x[z] = x[(z - 1)];
-        y[z] = y[(z - 1)];
-    }
+  if (leftDirection) {
+    x[0] -= DOT_SIZE;
+  }
 
-    if (leftDirection) {
-        x[0] -= DOT_SIZE;
-    }
+  if (rightDirection) {
+    x[0] += DOT_SIZE;
+  }
 
-    if (rightDirection) {
-        x[0] += DOT_SIZE;
-    }
+  if (upDirection) {
+    y[0] -= DOT_SIZE;
+  }
 
-    if (upDirection) {
-        y[0] -= DOT_SIZE;
-    }
-
-    if (downDirection) {
-        y[0] += DOT_SIZE;
-    }
+  if (downDirection) {
+    y[0] += DOT_SIZE;
+  }
 }
 
 function checkCollision() {
-
-    for (var z = dots; z > 0; z--) {
-
-        if ((z > 4) && (x[0] == x[z]) && (y[0] == y[z])) {
-            inGame = false;
-        }
-    }
-
-    if (y[0] >= C_HEIGHT) {
-        inGame= false;
-    }
-
-    if (y[0] < 0) {
-       inGame = false;
-    }
-
-    if (x[0] >= C_WIDTH) {
+  for (var z = dots; z > 0; z--) {
+    if ((z > 4) && (x[0] == x[z]) && (y[0] == y[z])) {
       inGame = false;
+      hitYourself = true;
     }
+  }
 
-    if (x[0] < 0) {
-      inGame = false;
-    }
+  if (y[0] >= C_HEIGHT) {
+    inGame= false;
+    hitWall = true;
+  }
+
+  if (y[0] < 10) {
+    inGame = false;
+    hitWall = true;
+  }
+
+  if (x[0] >= C_WIDTH) {
+    inGame = false;
+    hitWall = true;
+  }
+
+  if (x[0] < 0) {
+    inGame = false;
+    hitWall = true;
+  }
 }
 
-function locateApple() {
-
-    var r = Math.floor(Math.random() * MAX_RAND);
-    apple_x = r * DOT_SIZE;
-
-    r = Math.floor(Math.random() * MAX_RAND);
-    apple_y = r * DOT_SIZE;
+function locateGreenApple() {
+  greenApple_x = (Math.floor(Math.random() * MAX_RAND)) * DOT_SIZE;
+  greenApple_y = (Math.floor(Math.random() * MAX_RAND) + 1) * DOT_SIZE;
 }
 
 function locatePoison() {
-
-    var r = Math.floor(Math.random() * MAX_RAND);
-    poison_x = r * DOT_SIZE;
-
-    r = Math.floor(Math.random() * MAX_RAND);
-    poison_y = r * DOT_SIZE;
+  poison_x = (Math.floor(Math.random() * MAX_RAND)) * DOT_SIZE;
+  poison_y = (Math.floor(Math.random() * MAX_RAND) + 1) * DOT_SIZE;
 }
 
-function locateElixir(){
-if(score % 2 == 0){
-    var r = Math.floor(Math.random() * MAX_RAND);
-    elixir_x = r * DOT_SIZE;
-
-    r = Math.floor(Math.random() * MAX_RAND);
-    elixir_y = r * DOT_SIZE;
+function checkSamePosition(x_axis, y_axis, z) {
+  switch (z) {
+    case 1:
+      if (x_axis == greenApple_x && y_axis == greenApple_y) {
+        samePosition = true;
+      }
+      break;
+    case 2:
+      if (x_axis == poison_x && y_axis == poison_y) {
+        samePosition = true;
+      }
+      break;
   }
 }
-function gameCycle() {
-    if (inGame) {
 
-        checkApple();
-        checkCollision();
-        checkPoison();
-        checkCollision();
-        checkElixir();
-        checkCollision();
-        move();
-        doDrawing();
-        setTimeout("gameCycle()", DELAY);
+function locateRedApple() {
+  randomValue = Math.floor((Math.random() * 10) + 1);
+  if (randomValue > 7) {
+    setRedApple = true;
+  }
+  if (setRedApple) {
+    setLocateRedApple();
+  }
+}
+
+function setLocateRedApple() {
+  redApple_x = (Math.floor(Math.random() * MAX_RAND)) * DOT_SIZE;
+  redApple_y = (Math.floor(Math.random() * MAX_RAND) + 1) * DOT_SIZE;
+  checkSamePosition(redApple_x, redApple_y, 1);
+  if (samePosition) {
+    samePosition = false;
+    setLocateRedApple();
+  } else {
+    checkSamePosition(redApple_x, redApple_y, 2);
+    if (samePosition) {
+      samePosition = false;
+      setLocateRedApple();
     }
+  }
+}
+
+function gameCycle() {
+  if (inGame) {
+    checkGreenApple();
+    checkPoison();
+    checkRedApple();
+    increasingSpeed();
+    checkCollision();
+    move();
+    doDrawing();
+    setTimeout("gameCycle()", DELAY);
+  }
 }
 
 onkeydown = function(e) {
+  var key = e.keyCode;
 
-    var key = e.keyCode;
+  if ((key == LEFT_KEY || key==a) && (!rightDirection)) {
+    leftDirection = true;
+    upDirection = false;
+    downDirection = false;
+  }
 
-    if ((key == LEFT_KEY || key==a) && (!rightDirection)) {
+  if ((key == RIGHT_KEY || key==d) && (!leftDirection)) {
+    rightDirection = true;
+    upDirection = false;
+    downDirection = false;
+  }
 
-        leftDirection = true;
-        upDirection = false;
-        downDirection = false;
-    }
+  if ((key == UP_KEY || key==w) && (!downDirection)) {
+    upDirection = true;
+    rightDirection = false;
+    leftDirection = false;
+  }
 
-    if ((key == RIGHT_KEY || key==d) && (!leftDirection)) {
+  if ((key == DOWN_KEY || key==s) && (!upDirection)) {
+    downDirection = true;
+    rightDirection = false;
+    leftDirection = false;
+  }
 
-        rightDirection = true;
-        upDirection = false;
-        downDirection = false;
-    }
-
-    if ((key == UP_KEY || key==w) && (!downDirection)) {
-
-        upDirection = true;
-        rightDirection = false;
-        leftDirection = false;
-    }
-
-    if ((key == DOWN_KEY || key==s) && (!upDirection)) {
-
-        downDirection = true;
-        rightDirection = false;
-        leftDirection = false;
-    }
+  if (key == ENTER_KEY && enterPressed == true) {
+    enterPressed = false;
+    again();
+  }
 };
