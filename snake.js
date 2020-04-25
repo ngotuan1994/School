@@ -41,7 +41,7 @@ var DELAY = 125;
 var tempDELAY;
 var C_HEIGHT;
 var C_WIDTH;
-
+let autoplay=false
 const LEFT_KEY = 37;
 const RIGHT_KEY = 39;
 const UP_KEY = 38;
@@ -128,31 +128,31 @@ function again() {
 
 function loadImages() {
   head = new Image();
-  head.src = 'snake-head.png';
+  head.src = 'lib/image/snake-head.png';
 
   tail = new Image();
   if (paint == "blue") {
-    tail.src = 'blue-dot.png';
+    tail.src = 'lib/image/blue-dot.png';
   } else if (paint == "green") {
-    tail.src = 'green-dot.png';
+    tail.src = 'lib/image/green-dot.png';
   } else if (paint == "orange") {
-    tail.src = 'orange-dot.png';
+    tail.src = 'lib/image/orange-dot.png';
   } else if (paint == "purple") {
-    tail.src = 'purple-dot.png';
+    tail.src = 'lib/image/purple-dot.png';
   } else if (paint == "red") {
-    tail.src = 'red-dot.png';
+    tail.src = 'lib/image/red-dot.png';
   } else {
-    tail.src = 'yellow-dot.png';
+    tail.src = 'lib/image/yellow-dot.png';
   }
 
   greenApple = new Image();
-  greenApple.src = "green-apple.png";
+  greenApple.src = "lib/image/green-apple.png";
 
   poison = new Image();
-  poison.src = "poison.png";
+  poison.src = "lib/image/poison.png";
 
   redApple = new Image();
-  redApple.src = "red-apple.png";
+  redApple.src = "lib/image/red-apple.png";
 }
 
 function paintedBall(color) {
@@ -278,7 +278,8 @@ function move() {
     x[z] = x[(z - 1)];
     y[z] = y[(z - 1)];
   }
-
+  
+  
   if (leftDirection) {
     x[0] -= DOT_SIZE;
   }

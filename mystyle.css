@@ -1,8 +1,8 @@
 *,
 *::before
 *::after{
-  margin: =100px auto;
-  padding: =0;
+  margin: 100px auto;
+  padding: 0;
   align-items: center;
 }
 body{

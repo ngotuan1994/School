@@ -9,7 +9,7 @@
 <div id="background">
   <style>
     canvas {
-      background: black;
+      background-image:  url(lib/image/download.jpg);
     }
   </style>
 </div>
@@ -19,8 +19,8 @@
   <script src="snake.js"></script>
 
   <!-- Create the header for the webpage -->
-  <p><img src="header1.png"></p>
-  <p><img src="header2.png"></p>
+  <p><img src="lib/image/header1.png"></p>
+  <p><img src="lib/image/header2.png"></p>
 
   <!-- Create the buttons for the game -->
   <!-- 'PLAY GAME' button -->
@@ -28,11 +28,11 @@
   <!-- 'HOW TO PLAY' button -->
   <button id="instruction" style="height:30px;width:150px" onclick="howToPlay();">HOW TO PLAY</button> </br>
   <div id="myDIV2" style="display:none">
-    <p style="font-size:20px"><b><img src="Up-arrow.png" width="25" height="25"> , <img src="W-key.png" width="25" height="25">: Move Up </b></p>
-    <p style="font-size:20px"><b><img src="Down-arrow.png" width="25" height="25"> , <img src="S-key.png" width="25" height="25">: Move Down </b></p>
-    <p style="font-size:20px"><b><img src="Left-arrow.png" width="25" height="25"> , <img src="A-key.png" width="25" height="25">: Move Left </b></p>
-    <p style="font-size:20px"><b><img src="Right-arrow.png" width="25" height="25"> , <img src="D-key.png" width="25" height="25">: Move Right </b></p>
-    <p style="font-size:20px"><b><img src="Enter-key.png" width="25" height="25">: Press To Play Again </b></p>
+    <p style="font-size:20px"><b><img src="lib/image/Up-arrow.png" width="25" height="25"> , <img src="lib/image/W-key.png" width="25" height="25">: Move Up </b></p>
+    <p style="font-size:20px"><b><img src="lib/image/Down-arrow.png" width="25" height="25"> , <img src="lib/image/S-key.png" width="25" height="25">: Move Down </b></p>
+    <p style="font-size:20px"><b><img src="lib/image/Left-arrow.png" width="25" height="25"> , <img src="lib/image/A-key.png" width="25" height="25">: Move Left </b></p>
+    <p style="font-size:20px"><b><img src="lib/image/Right-arrow.png" width="25" height="25"> , <img src="lib/image/D-key.png" width="25" height="25">: Move Right </b></p>
+    <p style="font-size:20px"><b><img src="lib/image/Enter-key.png" width="25" height="25">: Press To Play Again </b></p>
   </div>
   <!-- 'RESET' button -->
   <button id="reset" style="height:30px;width:150px" onclick="reset()">RESET</button> </br>
@@ -77,8 +77,8 @@
   </br>
 
   <!-- Load musical files -->
-  <audio id="music1" src="lib/electronic.mp3" autoplay loop></audio>
-  <audio id="music2" src="lib/first-noel-r&b.mp3" autoplay loop></audio>
+  <audio id="music1" src="lib/audio/electronic.mp3" autoplay loop></audio>
+  <audio id="music2" src="lib/audio/first-noel-r&b.mp3" autoplay loop></audio>
 
   <!-- Create the frame for the game -->
   <center>
