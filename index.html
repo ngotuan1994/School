@@ -111,10 +111,10 @@
       quickGame = false;
       document.getElementById("play").disabled = true;
     } else if (settingGame) {
-      document.getElementById("play").disabled = false;
       inGame = true;
       init();
       settingGame = false;
+      document.getElementById("play").disabled = true;
     }
   }
   </script>
@@ -156,6 +156,7 @@
     if (sizeFrame != "" && velocity != "" && paint != "LIGHT") {
       quickGame = false;
       settingGame = true;
+      document.getElementById("play").disabled = false;
       canvasFrame(sizeFrame, sizeFrame);
       speed(velocity);
       paintedBall(paint);
