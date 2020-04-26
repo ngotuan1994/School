@@ -109,8 +109,9 @@
       paintedBall("green");
       init();
       quickGame = false;
-      document.getElementById('play').style.visibility = 'hidden';
+      document.getElementById("play").disabled = true;
     } else if (settingGame) {
+      document.getElementById("play").disabled = false;
       inGame = true;
       init();
       settingGame = false;
@@ -121,7 +122,6 @@
   <!-- Create EventListener for 'RESET' button -->
   <script> function reset() {
     location.reload();
-    document.getElementById('play').style.visibility = 'visible';
   }
   </script>
 
