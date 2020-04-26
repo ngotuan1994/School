@@ -9,7 +9,7 @@
 <div id="background">
   <style>
     canvas {
-      background-image:  url(lib/image/download.jpg);
+      background-color: black;
     }
   </style>
 </div>
@@ -24,15 +24,20 @@
 
   <!-- Create the buttons for the game -->
   <!-- 'PLAY GAME' button -->
-  <button id="play" style="height:30px;width:150px" onclick="playGame();" title="Set Up The Game To Play" disabled>PLAY GAME</button></br>
+  <button id="play" style="height:30px;width:150px" onclick="playGame();">PLAY GAME</button></br>
   <!-- 'HOW TO PLAY' button -->
   <button id="instruction" style="height:30px;width:150px" onclick="howToPlay();">HOW TO PLAY</button> </br>
   <div id="myDIV2" style="display:none">
+    <p style="font-size:20px; color:red"><b><img src="lib/image/game-controller.png"> HOT KEY <img src="lib/image/game-controller.png"></b><p>
     <p style="font-size:20px"><b><img src="lib/image/Up-arrow.png" width="25" height="25"> , <img src="lib/image/W-key.png" width="25" height="25">: Move Up </b></p>
     <p style="font-size:20px"><b><img src="lib/image/Down-arrow.png" width="25" height="25"> , <img src="lib/image/S-key.png" width="25" height="25">: Move Down </b></p>
     <p style="font-size:20px"><b><img src="lib/image/Left-arrow.png" width="25" height="25"> , <img src="lib/image/A-key.png" width="25" height="25">: Move Left </b></p>
     <p style="font-size:20px"><b><img src="lib/image/Right-arrow.png" width="25" height="25"> , <img src="lib/image/D-key.png" width="25" height="25">: Move Right </b></p>
     <p style="font-size:20px"><b><img src="lib/image/Enter-key.png" width="25" height="25">: Press To Play Again </b></p>
+    <p style="font-size:20px; color:red"><b><img src="lib/image/mana.png"> ITEMS <img src="lib/image/mana.png"></b></p>
+    <p style="font-size:20px"><b><img src="lib/image/green-apple-25.png">: Green Apple (+1 Point) </b></p>
+    <p style="font-size:20px"><b><img src="lib/image/red-apple-25.png">: Red Apple (+2 Points) </b></p>
+    <p style="font-size:20px"><b><img src="lib/image/poison-25.png">: Poison </b></p>
   </div>
   <!-- 'RESET' button -->
   <button id="reset" style="height:30px;width:150px" onclick="reset()">RESET</button> </br>
@@ -40,55 +45,75 @@
   <button id="setting" style="height:30px;width:150px" onclick="gameSetting();">SETTING</button> </br>
   <div id="myDIV" style="display:none">
     </br>
-    <label for="frame">FRAME:</label>
+    <label for="frame"><b>FRAME:</b></label>
     <select id="frame">
-      <option value="300">DEFAULT</option>
+      <option value="">Select Size</option>
+      <option value="300">300x300</option>
       <option value="400">400x400</option>
       <option value="500">500x500</option>
+      <option value="600">600x600</option>
     </select>
     <br></br>
-    <label for="speed">SPEED:</label>
+    <label for="speed"><b>SPEED:</b></label>
     <select id="speed">
-      <option value="125">DEFAULT</option>
+      <option value="">Select Velocity</option>
       <option value="150">Slow</option>
       <option value="100">Medium</option>
       <option value="50">Fast</optopn>
     </select>
     <br></br>
-    <label for="color">COLOR OF SNAKE:</label>
-    <select id="color">
-      <option value="red">RED</option>
-      <option value="blue">BLUE</option>
-      <option value="green">GREEN</option>
-      <option value="orange">ORANGE</option>
-      <option value="purple">PURPLE</option>
-      <option value="yellow">YELLOW</option>
+    <label for="color"><b>COLOR OF SNAKE:</b></label>
+    <select id="color"
+      onchange="this.className=this.options[this.selectedIndex].className"
+      class="LIGHT">
+      <option class="LIGHT" value="">Select Color</option>
+      <option class="GREEN" value="green"></option>
+      <option class="RED" value="red"></option>
+      <option class="BLUE" value="blue"></option>
+      <option class="ORANGE" value="orange"></option>
+      <option class="PURPLE" value="purple"></option>
+      <option class="YELLOW" value="yellow"></option>
     </select>
     <br></br>
-    <label for="sound">SOUND:</label>
+    <label for="sound"><b>SOUND:</b></label>
     <select id="sound">
       <option value="on">On</option>
       <option value="off">Off</option>
     </select>
     <br></br>
     <button id="apply" onclick="apply();">APPLY</button>
-    <br>
+    <p id="message" style="color:red"></p>
   </div>
   </br>
 
   <!-- Load musical files -->
   <audio id="music1" src="lib/audio/electronic.mp3" autoplay loop></audio>
-  <audio id="music2" src="lib/audio/first-noel-r&b.mp3" autoplay loop></audio>
+  <audio id="music2" src="lib/audio/first-noel-r_b.mp3" autoplay loop></audio>
 
   <!-- Create the frame for the game -->
   <center>
     <canvas id="myCanvas" style="display:none"></canvas> </br>
   </center>
 
+  <script>
+    var quickGame = true;
+    var settingGame = false;
+  </script>
+
   <!-- Create EventListener for 'PLAY GAME' button -->
   <script> function playGame() {
-    document.getElementById("play").disabled = true;
-    init();
+    if (quickGame) {
+      document.getElementById("myCanvas").style.display = "block";
+      canvasFrame(300, 300);
+      speed(125);
+      paintedBall("green");
+      init();
+      quickGame = false;
+    } else if (settingGame) {
+      inGame = true;
+      init();
+      settingGame = false;
+    }
   }
   </script>
 
@@ -123,32 +148,36 @@
   <!-- Create EventListener for 'APPLY' button -->
   <script> function apply() {
     var sizeFrame = document.getElementById("frame").value;
-    canvasFrame(sizeFrame, sizeFrame);
-
     var velocity = document.getElementById("speed").value;
-    speed(velocity);
-
     var paint = document.getElementById("color").value;
-    paintedBall(paint);
-
     var sound = document.getElementById("sound").value;
-    if (sound == "on") {
-      var randomNumber = Math.floor((Math.random() * 10) + 1);
-      if (randomNumber % 2 == 0) {
-        document.getElementById("music1").play();
-      } else {
-        document.getElementById("music2").play();
+    if (sizeFrame != "" && velocity != "" && paint != "LIGHT") {
+      quickGame = false;
+      settingGame = true;
+      canvasFrame(sizeFrame, sizeFrame);
+      speed(velocity);
+      paintedBall(paint);
+      if (sound == "on") {
+        var randomNumber = Math.floor((Math.random() * 10) + 1);
+        if (randomNumber % 2 == 0) {
+          document.getElementById("music1").play();
+        } else {
+          document.getElementById("music2").play();
+        }
       }
-    }
 
-    document.getElementById("play").disabled = false;
-    document.getElementById("myDIV").style.display = "none";
-    document.getElementById("frame").disabled = true;
-    document.getElementById("speed").disabled = true;
-    document.getElementById("sound").disabled = true;
-    document.getElementById("color").disabled = true;
-    document.getElementById("apply").disabled = true;
-    document.getElementById("myCanvas").style.display = "block";
+      document.getElementById("play").disabled = false;
+      document.getElementById("myDIV").style.display = "none";
+      document.getElementById("frame").disabled = true;
+      document.getElementById("speed").disabled = true;
+      document.getElementById("sound").disabled = true;
+      document.getElementById("color").disabled = true;
+      document.getElementById("apply").disabled = true;
+      document.getElementById("myCanvas").style.display = "block";
+      document.getElementById("message").innerHTML = "";
+    } else {
+      document.getElementById("message").innerHTML = "Please select all options before applying";
+    }
   }
   </script>
 

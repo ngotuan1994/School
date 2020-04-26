@@ -1,9 +1,11 @@
 // JavaScript Snake example
 // CPSC254: project
 
+// Variables of Frame
 var canvas;
 var ctx;
 
+// Variables of Characters
 var redApple;
 var poison;
 var head;
@@ -11,6 +13,7 @@ var greenApple;
 var tail;
 var paint;
 
+// Variables of Characters' Position
 var dots;
 var greenApple_x;
 var greenApple_y;
@@ -19,6 +22,7 @@ var poison_y;
 var redApple_x;
 var redApple_y;
 
+// Variables of Control Game
 var leftDirection = false;
 var rightDirection = true;
 var upDirection = false;
@@ -34,14 +38,14 @@ var increasedSpeed = 0;
 var randomValue;
 var setRedApple = false;
 
+// Variables of Creating Frame and Hot Key
 var DOT_SIZE = 10;
 var ALL_DOTS;
 var MAX_RAND;
-var DELAY = 125;
+var DELAY;
 var tempDELAY;
 var C_HEIGHT;
 var C_WIDTH;
-let autoplay=false
 const LEFT_KEY = 37;
 const RIGHT_KEY = 39;
 const UP_KEY = 38;
@@ -52,25 +56,31 @@ const w=87;
 const d=68;
 const s=83;
 
+// Variables of Length of Snake
 var x;
 var y;
 
 // Create the frame and properties of the game
 function canvasFrame(w, h) {
   var myFrame = document.getElementById('myCanvas');
-  if (w == 300) {
-    ALL_DOTS = 900;
-    MAX_RAND = 29;
-    x = new Array(ALL_DOTS);
-    y = new Array(ALL_DOTS);
-  } else if (w == 400) {
+  if (w == 400) {
     ALL_DOTS = 1600;
     MAX_RAND = 39;
     x = new Array(ALL_DOTS);
     y = new Array(ALL_DOTS);
-  } else {
+  } else if (w == 500) {
     ALL_DOTS = 2500;
     MAX_RAND = 49;
+    x = new Array(ALL_DOTS);
+    y = new Array(ALL_DOTS);
+  } else if (w == 600) {
+    ALL_DOTS = 3600;
+    MAX_RAND = 59;
+    x = new Array(ALL_DOTS);
+    y = new Array(ALL_DOTS);
+  } else {
+    ALL_DOTS = 900;
+    MAX_RAND = 29;
     x = new Array(ALL_DOTS);
     y = new Array(ALL_DOTS);
   }
@@ -175,13 +185,13 @@ function doDrawing() {
   ctx.font="10x Changa One";
   ctx.fillText("Score:", 10, 10);
   ctx.fillText(score, 50, 10);
-  if (C_WIDTH == 300) {
-    ctx.fillText("Speed:", 235, 10);
-    ctx.fillText(tempDELAY, 275, 10);
+  if (C_WIDTH == 600) {
+    ctx.fillText("Speed:", 535, 10);
+    ctx.fillText(tempDELAY, 575, 10);
     if ((x[0] == greenApple_x) && (y[0] == greenApple_y)) {
-      ctx.fillText("You ate a green apple (+1 point)", 75, 10);
+      ctx.fillText("You ate a green apple (+1 point)", 225, 10);
     } else if ((x[0] == redApple_x) && (y[0] == redApple_y)) {
-      ctx.fillText("You ate a red apple (+2 point)", 75, 10);
+      ctx.fillText("You ate a red apple (+2 point)", 225, 10);
     }
   } else if (C_WIDTH == 400) {
     ctx.fillText("Speed:", 335, 10);
@@ -191,13 +201,21 @@ function doDrawing() {
     } else if ((x[0] == redApple_x) && (y[0] == redApple_y)) {
       ctx.fillText("You ate a red apple (+2 point)", 125, 10);
     }
-  } else {
+  } else if (C_WIDTH == 500) {
     ctx.fillText("Speed:", 435, 10);
     ctx.fillText(tempDELAY, 475, 10);
     if ((x[0] == greenApple_x) && (y[0] == greenApple_y)) {
       ctx.fillText("You ate a green apple (+1 point)", 175, 10);
     } else if ((x[0] == redApple_x) && (y[0] == redApple_y)) {
       ctx.fillText("You ate a red apple (+2 point)", 175, 10);
+    }
+  } else {
+    ctx.fillText("Speed:", 235, 10);
+    ctx.fillText(tempDELAY, 275, 10);
+    if ((x[0] == greenApple_x) && (y[0] == greenApple_y)) {
+      ctx.fillText("You ate a green apple (+1 point)", 75, 10);
+    } else if ((x[0] == redApple_x) && (y[0] == redApple_y)) {
+      ctx.fillText("You ate a red apple (+2 point)", 75, 10);
     }
   }
 
@@ -220,6 +238,7 @@ function doDrawing() {
 }
 
 function gameOver() {
+  enterPressed = true;
   ctx.textBaseline = 'middle';
   ctx.textAlign = 'center';
   ctx.font = 'normal bold';
@@ -236,7 +255,6 @@ function gameOver() {
   ctx.fillText('GAME OVER', C_WIDTH/2+3, C_HEIGHT/2);
   ctx.fillStyle = 'yellow';
   ctx.fillText('Score: ' + score, C_WIDTH/2+3, C_HEIGHT/2+30);
-  enterPressed = true;
 }
 
 function checkGreenApple() {
@@ -278,8 +296,8 @@ function move() {
     x[z] = x[(z - 1)];
     y[z] = y[(z - 1)];
   }
-  
-  
+
+
   if (leftDirection) {
     x[0] -= DOT_SIZE;
   }
@@ -393,25 +411,25 @@ function gameCycle() {
 onkeydown = function(e) {
   var key = e.keyCode;
 
-  if ((key == LEFT_KEY || key==a) && (!rightDirection)) {
+  if ((key == LEFT_KEY || key== a) && (!rightDirection)) {
     leftDirection = true;
     upDirection = false;
     downDirection = false;
   }
 
-  if ((key == RIGHT_KEY || key==d) && (!leftDirection)) {
+  if ((key == RIGHT_KEY || key== d) && (!leftDirection)) {
     rightDirection = true;
     upDirection = false;
     downDirection = false;
   }
 
-  if ((key == UP_KEY || key==w) && (!downDirection)) {
+  if ((key == UP_KEY || key== w) && (!downDirection)) {
     upDirection = true;
     rightDirection = false;
     leftDirection = false;
   }
 
-  if ((key == DOWN_KEY || key==s) && (!upDirection)) {
+  if ((key == DOWN_KEY || key== s) && (!upDirection)) {
     downDirection = true;
     rightDirection = false;
     leftDirection = false;

@@ -34,12 +34,30 @@ body{
 #speed{
   background-color: lightsalmon;
 }
-#color{
-  background-color: lightsalmon;
-}
 #sound{
   background-color: lightsalmon;
 }
 #apply{
   background-color: lightsalmon;
+}
+.LIGHT{
+  background-color: lightsalmon;
+}
+.GREEN{
+  background-color:green;
+}
+.RED{
+  background-color:red;
+}
+.BLUE{
+  background-color:blue;
+}
+.ORANGE{
+  background-color:orange;
+}
+.PURPLE{
+  background-color:purple;
+}
+.YELLOW{
+  background-color:yellow;
 }
